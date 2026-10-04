@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClubHub · ER model</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper: #f5f5f5; --color-ink: #2d3142; --color-muted: #4f5d75; --color-accent: #eb6c36;
+      --font-sans: 'Geist', system-ui, sans-serif; --font-serif: 'Instrument Serif', serif; --font-mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+      letter-spacing: -0.02em; line-height: 1.15; color: var(--color-ink); margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">ER · ClubHub</p>
+    <h1>ClubHub · data model</h1>
+    <svg viewBox="0 0 1040 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="erd-title erd-desc">
+      <title id="erd-title">ClubHub · data model</title>
+      <desc id="erd-desc">Entity-relationship diagram: a club has members and events; each event uses one room, has RSVPs from members and budget entries; workshop, social and competition are event subtypes in one table.</desc>
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+      <line x1="160" y1="180" x2="160" y2="232" stroke="#4f5d75" stroke-width="1"/>
+      <line x1="280" y1="108" x2="380" y2="108" stroke="#4f5d75" stroke-width="1"/>
+      <line x1="660" y1="108" x2="760" y2="108" stroke="#4f5d75" stroke-width="1"/>
+      <line x1="660" y1="320" x2="760" y2="320" stroke="#4f5d75" stroke-width="1"/>
+      <line x1="520" y1="368" x2="520" y2="440" stroke="#4f5d75" stroke-width="1"/>
+      <path d="M 280,400 H 320 Q 328,400 328,408 V 512 Q 328,520 336,520 H 380" fill="none" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="154" y="184" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="160" y="194" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="154" y="216" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="160" y="226" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="286" y="100" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="292" y="110" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="362" y="100" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="368" y="110" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="742" y="100" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="748" y="110" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="666" y="100" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="672" y="110" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="666" y="312" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="672" y="322" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="742" y="312" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="748" y="322" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="514" y="372" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="520" y="382" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="514" y="420" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="520" y="430" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="286" y="392" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="292" y="402" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+      <rect x="362" y="512" width="12" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="368" y="522" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">N</text>
+      <rect x="40" y="40" width="240" height="140" rx="6" fill="#f5f5f5"/>
+      <rect x="40" y="40" width="240" height="140" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="40" y="40" width="240" height="40" rx="6" fill="rgba(45,49,66,0.04)" stroke="none"/>
+      <rect x="40" y="72" width="240" height="8" fill="rgba(45,49,66,0.04)"/>
+      <line x1="40" y1="80" x2="280" y2="80" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+      <text x="56" y="56" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY</text>
+      <text x="56" y="72" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">Club</text>
+      <text x="56" y="100" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="264" y="100" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="56" y="120" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Name</text>
+      <text x="264" y="120" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="56" y="140" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Description</text>
+      <text x="264" y="140" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="56" y="160" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">LogoPath</text>
+      <text x="264" y="160" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text?</text>
+      <rect x="40" y="232" width="240" height="220" rx="6" fill="#f5f5f5"/>
+      <rect x="40" y="232" width="240" height="220" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="40" y="232" width="240" height="40" rx="6" fill="rgba(45,49,66,0.04)" stroke="none"/>
+      <rect x="40" y="264" width="240" height="8" fill="rgba(45,49,66,0.04)"/>
+      <line x1="40" y1="272" x2="280" y2="272" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+      <text x="56" y="248" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY</text>
+      <text x="56" y="264" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">Member</text>
+      <text x="56" y="292" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="264" y="292" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="56" y="312" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ ClubId</text>
+      <text x="264" y="312" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="56" y="332" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">StudentId</text>
+      <text x="264" y="332" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text · unique</text>
+      <text x="56" y="352" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">FirstName</text>
+      <text x="264" y="352" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="56" y="372" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">LastName</text>
+      <text x="264" y="372" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="56" y="392" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Email</text>
+      <text x="264" y="392" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="56" y="412" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Role</text>
+      <text x="264" y="412" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">enum</text>
+      <text x="56" y="432" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">JoinedDate</text>
+      <text x="264" y="432" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">date</text>
+      <rect x="380" y="40" width="280" height="328" rx="6" fill="#f5f5f5"/>
+      <rect x="380" y="40" width="280" height="328" rx="6" fill="rgba(235,108,54,0.04)" stroke="#eb6c36" stroke-width="1"/>
+      <rect x="380" y="40" width="280" height="40" rx="6" fill="rgba(235,108,54,0.10)" stroke="none"/>
+      <rect x="380" y="72" width="280" height="8" fill="rgba(235,108,54,0.10)"/>
+      <line x1="380" y1="80" x2="660" y2="80" stroke="rgba(235,108,54,0.40)" stroke-width="1"/>
+      <text x="396" y="56" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY · CORE</text>
+      <text x="396" y="72" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">Event</text>
+      <text x="396" y="100" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="644" y="100" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="120" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ ClubId</text>
+      <text x="644" y="120" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="140" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ RoomId</text>
+      <text x="644" y="140" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="160" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Title</text>
+      <text x="644" y="160" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="396" y="180" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Start</text>
+      <text x="644" y="180" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">datetime</text>
+      <text x="396" y="200" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">End</text>
+      <text x="644" y="200" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">datetime</text>
+      <text x="396" y="220" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Capacity</text>
+      <text x="644" y="220" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="240" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">TicketPrice</text>
+      <text x="644" y="240" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">decimal</text>
+      <text x="396" y="260" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">EventKind</text>
+      <text x="644" y="260" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">discriminator</text>
+      <line x1="380" y1="272" x2="660" y2="272" stroke="rgba(235,108,54,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="396" y="288" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">SUBTYPES · SAME TABLE (TPH)</text>
+      <text x="396" y="308" fill="#2d3142" font-size="11" font-family="'Geist', sans-serif" font-weight="500">Workshop</text>
+      <text x="644" y="308" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">MaterialsCostPerHead</text>
+      <text x="396" y="328" fill="#2d3142" font-size="11" font-family="'Geist', sans-serif" font-weight="500">Social</text>
+      <text x="644" y="328" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">CateringCostPerHead</text>
+      <text x="396" y="348" fill="#2d3142" font-size="11" font-family="'Geist', sans-serif" font-weight="500">Competition</text>
+      <text x="644" y="348" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">PrizePool · TeamSize</text>
+      <rect x="760" y="40" width="240" height="140" rx="6" fill="#f5f5f5"/>
+      <rect x="760" y="40" width="240" height="140" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="760" y="40" width="240" height="40" rx="6" fill="rgba(45,49,66,0.04)" stroke="none"/>
+      <rect x="760" y="72" width="240" height="8" fill="rgba(45,49,66,0.04)"/>
+      <line x1="760" y1="80" x2="1000" y2="80" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+      <text x="776" y="56" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY</text>
+      <text x="776" y="72" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">Room</text>
+      <text x="776" y="100" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="984" y="100" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="776" y="120" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Name</text>
+      <text x="984" y="120" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="776" y="140" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Capacity</text>
+      <text x="984" y="140" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="776" y="160" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">IsOutdoor</text>
+      <text x="984" y="160" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">bool</text>
+      <rect x="760" y="232" width="240" height="180" rx="6" fill="#f5f5f5"/>
+      <rect x="760" y="232" width="240" height="180" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="760" y="232" width="240" height="40" rx="6" fill="rgba(45,49,66,0.04)" stroke="none"/>
+      <rect x="760" y="264" width="240" height="8" fill="rgba(45,49,66,0.04)"/>
+      <line x1="760" y1="272" x2="1000" y2="272" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+      <text x="776" y="248" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY</text>
+      <text x="776" y="264" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">BudgetEntry</text>
+      <text x="776" y="292" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="984" y="292" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="776" y="312" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ EventId</text>
+      <text x="984" y="312" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="776" y="332" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Type</text>
+      <text x="984" y="332" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">enum · income/cost</text>
+      <text x="776" y="352" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Amount</text>
+      <text x="984" y="352" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">decimal</text>
+      <text x="776" y="372" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Description</text>
+      <text x="984" y="372" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">text</text>
+      <text x="776" y="392" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Date</text>
+      <text x="984" y="392" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">date</text>
+      <rect x="380" y="440" width="280" height="180" rx="6" fill="#f5f5f5"/>
+      <rect x="380" y="440" width="280" height="180" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="380" y="440" width="280" height="40" rx="6" fill="rgba(45,49,66,0.04)" stroke="none"/>
+      <rect x="380" y="472" width="280" height="8" fill="rgba(45,49,66,0.04)"/>
+      <line x1="380" y1="480" x2="660" y2="480" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+      <text x="396" y="456" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ENTITY</text>
+      <text x="396" y="472" fill="#2d3142" font-size="14" font-family="'Geist', sans-serif" font-weight="600">Rsvp</text>
+      <text x="396" y="500" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace"># Id</text>
+      <text x="644" y="500" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="520" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ EventId</text>
+      <text x="644" y="520" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="540" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">→ MemberId</text>
+      <text x="644" y="540" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">int</text>
+      <text x="396" y="560" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">Status</text>
+      <text x="644" y="560" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">enum</text>
+      <text x="396" y="580" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">CreatedAt</text>
+      <text x="644" y="580" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">datetime</text>
+      <text x="396" y="600" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace">CheckedIn</text>
+      <text x="644" y="600" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end">bool</text>
+      <line x1="40" y1="664" x2="1000" y2="664" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+      <text x="40" y="680" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+      <rect x="40" y="696" width="14" height="10" rx="2" fill="rgba(235,108,54,0.04)" stroke="#eb6c36" stroke-width="1"/>
+      <text x="60" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Core entity</text>
+      <rect x="160" y="696" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="180" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Entity</text>
+      <text x="260" y="704" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace" font-weight="600">#</text>
+      <text x="276" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Primary key</text>
+      <text x="372" y="704" fill="#2d3142" font-size="10" font-family="'Geist Mono', monospace" font-weight="600">→</text>
+      <text x="388" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Foreign key</text>
+      <text x="484" y="704" fill="#4f5d75" font-size="10" font-family="'Geist Mono', monospace" font-weight="600">1 / N</text>
+      <text x="520" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">One-to-many</text>
+      <line x1="624" y1="700" x2="648" y2="700" stroke="#eb6c36" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="656" y="704" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Subtypes stored in the Event table (EF Core TPH)</text>
+    </svg>
+  </div>
+</body>
+</html>

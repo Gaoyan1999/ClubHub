@@ -21,6 +21,7 @@
 - [x] Project references and NuGet packages (EF Core SQLite, ML.NET, CommunityToolkit.Mvvm, NUnit)
 - [x] `.gitignore` / `.gitattributes`
 - [x] Main window with side menu and page navigation (MVVM)
+- [ ] (B) Club dropdown in side menu; selected club shared with every screen (F1)
 - [x] App runs on Windows and shows the Members page with seed data
 
 ## 2. Core — models, enums, interfaces (A)
