@@ -38,6 +38,8 @@ On first run the app creates and seeds a SQLite database at
 2. Commit and push your branch.
 3. On the Windows VM: `git pull`, then run and debug in Visual Studio.
 
+> **Mac build error `... .baml cannot be found`?** It can happen after adding a new XAML file. Delete `ClubHub.Wpf/obj` and build again.
+
 ## Solution structure
 
 | Project | What goes in it |

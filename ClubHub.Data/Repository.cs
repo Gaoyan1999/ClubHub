@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ClubHub.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,23 +20,46 @@ public class Repository<T> : IRepository<T> where T : class
 
     public T? GetById(int id) => _set.Find(id);
 
-    public List<T> Find(Func<T, bool> predicate) => _set.Where(predicate).ToList();
+    public List<T> Find(Expression<Func<T, bool>> predicate) => _set.Where(predicate).ToList();
 
     public void Add(T item)
     {
         _set.Add(item);
-        _context.SaveChanges();
+        try
+        {
+            _context.SaveChanges();
+        }
+        catch
+        {
+            // Stop tracking the failed item so later saves are not blocked by it
+            _context.Entry(item).State = EntityState.Detached;
+            throw;
+        }
     }
 
     public void Update(T item)
     {
         _set.Update(item);
-        _context.SaveChanges();
+        SaveOrUndo(item);
     }
 
     public void Delete(T item)
     {
         _set.Remove(item);
-        _context.SaveChanges();
+        SaveOrUndo(item);
+    }
+
+    // On failure, reload the item from the database so the in-memory copy matches what is saved
+    private void SaveOrUndo(T item)
+    {
+        try
+        {
+            _context.SaveChanges();
+        }
+        catch
+        {
+            _context.Entry(item).Reload();
+            throw;
+        }
     }
 }

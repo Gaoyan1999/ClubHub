@@ -4,14 +4,52 @@
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="Club Members" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,12" />
 
-        <!-- TODO (Member A): search box, add/edit dialog, right-click menu -->
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Members}" AutoGenerateColumns="False"
-                  IsReadOnly="True" HeadersVisibility="Column">
+        <!-- Toolbar: search and role filter stretch, buttons stay on the right -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="120" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Search" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Grid.Column="1" Padding="4,3" VerticalContentAlignment="Center"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Name, student ID or email" />
+            <ComboBox Grid.Column="2" Width="130" Margin="8,0,0,0"
+                      ItemsSource="{Binding RoleFilters}" SelectedItem="{Binding SelectedRoleFilter}" />
+
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="8,0,0,0">
+                <Button Content="Add" Width="72" Margin="0,0,4,0" Command="{Binding AddMemberCommand}" />
+                <Button Content="Edit" Width="72" Margin="0,0,4,0" Command="{Binding EditMemberCommand}" />
+                <Button Content="Delete" Width="72" Margin="0,0,4,0" Command="{Binding DeleteMemberCommand}" />
+                <Button Content="Export CSV" Width="88" Command="{Binding ExportMembersCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedMember}"
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  HeadersVisibility="Column" CanUserAddRows="False">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditMemberCommand}" />
+                <KeyBinding Key="Delete" Command="{Binding DeleteMemberCommand}" />
+            </DataGrid.InputBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditMemberCommand}" />
+                    <MenuItem Header="Delete" Command="{Binding DeleteMemberCommand}" />
+                    <Separator />
+                    <MenuItem Header="Add member" Command="{Binding AddMemberCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}" Width="Auto" />
                 <DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="*" />
@@ -20,5 +58,7 @@
                 <DataGridTextColumn Header="Joined" Binding="{Binding JoinedDate, StringFormat=d}" Width="Auto" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <TextBlock Grid.Row="3" Text="{Binding StatusText}" Foreground="Gray" Margin="0,8,0,0" />
     </Grid>
 </UserControl>

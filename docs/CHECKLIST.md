@@ -32,29 +32,30 @@
 - [x] `Member` constructor overloads
 - [x] Interfaces: `IRepository<T>`, `IClashChecker`, `IAttendancePredictor`, `IExporter<T>`
 - [x] Extension method: `DateTime.Overlaps(...)`
-- [ ] Input validation rules on models/services (required fields, email format, end > start, capacity > 0, amount > 0)
+- [ ] Input validation rules on models/services (required fields, email format, end > start, capacity > 0, amount > 0) — members ✅
 
 ## 3. Data layer (A)
 
 - [x] `ClubHubDbContext` with TPH mapping for events
 - [x] Generic `Repository<T>`
+- [x] `Repository.Find` takes an `Expression` so filters run as SQL `WHERE`; failed saves are undone
 - [x] `DbSeeder` with starter club, members, rooms, events
 - [ ] Seed RSVPs and budget entries for upcoming events
 - [ ] Seed ~300 synthetic past events with RSVPs + check-ins (ML training data)
-- [ ] CSV export: `CsvExporter : IExporter<T>` for members and attendance
-- [ ] Error handling around database calls (friendly message, no crash)
+- [ ] CSV export: `CsvExporter<T> : IExporter<T>` — members ✅, attendance (F19) still to do
+- [ ] Error handling around database calls (friendly message, no crash) — members ✅
 
 ## 4. Screen 1 — Members (A)
 
 - [x] Member list in a DataGrid
-- [ ] Search box (filter by name, student ID, email)
-- [ ] Role filter dropdown
-- [ ] Add member dialog (modal) with validation
-- [ ] Edit member dialog
-- [ ] Delete with confirmation
-- [ ] Right-click menu (edit / delete)
-- [ ] Export members to CSV button
-- [ ] Duplicate student ID check
+- [x] Search box (filter by name, student ID, email)
+- [x] Role filter dropdown
+- [x] Add member dialog (modal) with validation
+- [x] Edit member dialog
+- [x] Delete with confirmation
+- [x] Right-click menu (edit / delete)
+- [x] Export members to CSV button
+- [x] Duplicate student ID check
 
 ## 5. Screen 2 — Events & Calendar (B)
 
@@ -111,18 +112,19 @@
 
 - [x] Clash checker tests (3)
 - [x] Seeder tests (2)
+- [x] Member validator, CSV exporter and repository tests (17)
 - [ ] Waitlist tests: full event → waitlisted; cancel → promoted in order
 - [ ] Budget tests: totals, estimated cost per event type (polymorphism)
 - [ ] Stats tests: attendance rate, no-show rate
-- [ ] Validation tests: bad email, end before start, negative amount
+- [ ] Validation tests: bad email ✅, duplicate student ID ✅, end before start, negative amount
 - [ ] All tests pass in VS 2022 Test Explorer
 
 ## 11. Rubric check (All)
 
 - [ ] Polymorphism used for a real purpose (`EstimateCost()` shown in Budget screen)
-- [ ] 2+ interfaces in real use
-- [ ] Generics / generic collections in real use
-- [ ] LINQ + lambda in real use
+- [x] 2+ interfaces in real use
+- [x] Generics / generic collections in real use
+- [x] LINQ + lambda in real use
 - [ ] NUnit tests present and passing
 - [ ] Enums, properties, extension methods, delegates/events in use
 - [ ] 4+ distinct screens with their own job
