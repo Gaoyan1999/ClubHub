@@ -1,5 +1,6 @@
 using System.Windows;
 using ClubHub.Data;
+using ClubHub.Wpf.Services;
 using ClubHub.Wpf.ViewModels;
 
 namespace ClubHub.Wpf;
@@ -18,7 +19,7 @@ public partial class App : Application
             _context.Database.EnsureCreated();
             DbSeeder.Seed(_context);
 
-            var window = new MainWindow { DataContext = new MainViewModel(_context) };
+            var window = new MainWindow { DataContext = new MainViewModel(_context, new DialogService()) };
             window.Show();
         }
         catch (Exception ex)
