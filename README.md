@@ -3,7 +3,7 @@
 31927/32998 .NET Applications Development — Assignment 2 (Group Project).
 
 A WPF desktop app that helps university clubs manage members, events, RSVPs, check-in and budgets, with attendance prediction (ML.NET).
-Full plan, roles and timeline: [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md).
+Full plan, roles and timeline: [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md). Task checklist: [`docs/CHECKLIST.md`](docs/CHECKLIST.md).
 
 ## Requirements
 
