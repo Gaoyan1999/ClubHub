@@ -54,6 +54,10 @@ ClubHub.sln
 
 ## 4. Data model
 
+![ClubHub ER diagram](diagrams/erd.png)
+
+*Source: [`diagrams/erd.html`](diagrams/erd.html) (open in a browser). Also exported as [`erd.svg`](diagrams/erd.svg).*
+
 | Class | Key fields |
 |---|---|
 | `Club` | Id, Name, Description, LogoPath, Members, Events |
@@ -72,43 +76,68 @@ EF Core maps the `Event` subclasses with **TPH** (one table + a discriminator co
 
 ---
 
-## 5. Features and the logic behind them
+## 5. Main functions
 
-### 5.1 Clash checking
-- Two time ranges overlap when `a.Start < b.End && b.Start < a.End`.
-- **Room clash:** same room, overlapping times → block saving, show a warning dialog.
-- **Member clash:** a member RSVPs to two overlapping events → warn, allow if confirmed.
-- Lives in `ClashChecker : IClashChecker`. Overlap test is an extension method `DateRange.Overlaps(...)`.
+The user is a **club admin** (e.g. the club president). Each function has an ID (F1, F2, …) so we can refer to it in the checklist, commits and the report.
 
-### 5.2 RSVP and waitlist
-- If `Going` count < capacity → status `Going`, else `Waitlisted`.
-- On cancel, the waitlist is rebuilt as a `Queue<Rsvp>` ordered by `CreatedAt`, and the first person is moved to `Going`.
-- `WaitlistService` raises a C# event `MemberPromoted` (delegate) → UI shows a notification.
+### Club and members
+- **F1** Admin picks their club. Every screen then shows only that club's data.
+- **F2** Admin adds a member: student ID, first name, last name, email, role (member / secretary / treasurer / president).
+- **F3** Admin edits a member, or deletes one (the app asks to confirm first).
+- **F4** Admin searches members by name, student ID or email, and filters by role.
+- **F5** Admin exports the member list to a CSV file.
 
-### 5.3 Check-in
-- On the event day, tick `CheckedIn` for each attendee. Search box filters the list.
+### Events
+- **F6** Admin creates an event and sets: title, type (workshop / social / competition), date, start and end time, room, capacity and ticket price.
+  - Workshop also asks for materials cost per person.
+  - Social also asks for food cost per person.
+  - Competition also asks for prize money and team size.
+- **F7** If the room is already booked at that time, the app shows a warning and does not save.
+- **F8** The app shows the estimated cost of the event (based on its type).
+- **F9** Admin edits or deletes an event.
+- **F10** Admin sees all events on a month calendar.
 
-### 5.4 Budget
-- Income/cost entries per event. Ticket income auto-calculated from check-ins × price.
-- **Polymorphism:** `Event.EstimateCost()` is `abstract`; each subclass overrides it (materials, catering, prize pool). Budget screen shows *estimated vs actual*.
+### Registration (RSVP)
+- **F11** Admin registers a member for an event.
+- **F12** If the event is full, the member goes on the waitlist instead.
+- **F13** When a registered member cancels, the first person on the waitlist moves up automatically, and the admin gets a message: *"Emma Patel moved from the waitlist to Going."*
+- **F14** If the member is already registered for another event at the same time, the app warns the admin.
+- **F15** The app predicts how many people will really come: *"48 registered → about 35 expected."*
+- **F16** *(Optional)* For outdoor events, the app shows a rain warning from the weather forecast.
 
-### 5.5 Dashboard
-- Attendance rate, no-show rate, income vs cost per month, most popular event type.
-- All stats via **LINQ with lambdas**, e.g.
-  `events.Where(e => e.End < DateTime.Now).GroupBy(e => e.Type).Select(g => new { g.Key, Rate = g.Average(e => e.AttendanceRate()) })`
+### Event day
+- **F17** Admin ticks off each person who arrives (check-in), with a search box to find names fast.
+- **F18** The app shows a live count: *"31 of 48 checked in."*
+- **F19** Admin exports the attendance list to a CSV file.
 
-### 5.6 Attendance prediction (ML.NET)
-- Regression model (e.g. FastTree). Features: event type, day of week, start hour, RSVP count, ticket price, is outdoor. Label: actual attendees.
-- Training data: past events in the seed database. We will **generate realistic synthetic history** (~300 past events) — say so clearly in the report.
-- Shown on the event detail screen: "48 RSVPs → about 35 expected to attend".
-- Behind `IAttendancePredictor`, so tests can use a simple fake predictor.
+### Budget
+- **F20** Admin adds income and cost items for an event (e.g. "Pizza — $240").
+- **F21** Ticket income is added automatically: people checked in × ticket price.
+- **F22** The app shows estimated cost vs actual cost, and the event's profit or loss.
 
-### 5.7 Weather warning (optional, only if time allows)
-- For outdoor rooms, call Open-Meteo for the event date; show a rain icon + warning.
-- Must fail safely (no internet → hide the warning, no crash).
+### Dashboard
+- **F23** Admin sees key numbers: total members, upcoming events, average attendance rate, no-show rate.
+- **F24** Charts: events by type, attendance over time, income vs cost per month.
+- **F25** Admin filters the dashboard by date range.
 
-### 5.8 Export
-- Export member list / attendance to CSV via `IExporter` (`CsvExporter`).
+### Messages the admin receives
+| When | Message |
+|---|---|
+| Waitlist moves up (F13) | "Emma Patel moved from the waitlist to Going." |
+| Event becomes full (F12) | "Pizza Night is now full. New sign-ups go to the waitlist." |
+| Room clash (F7) | "CB11.04.101 is already booked for Intro to Git at that time." |
+| Member clash (F14) | "Ben Smith is already registered for Mini Hackathon at that time." |
+| Rain forecast (F16, optional) | "Rain is forecast for Pizza Night (outdoor)." |
+| Bad input (all forms) | Clear message next to the field, e.g. "End time must be after start time." |
+
+### How it works (developer notes)
+- **Clash check (F7, F14):** two time ranges overlap when `a.Start < b.End && b.Start < a.End` — extension method `DateTime.Overlaps(...)`, used by `ClashChecker : IClashChecker`.
+- **Estimated cost (F8, F22):** `Event.EstimateCost()` is `abstract`; `Workshop`, `Social`, `Competition` override it (**polymorphism**).
+- **Waitlist (F12, F13):** `Going` count < capacity → `Going`, else `Waitlisted`. On cancel, build a `Queue<Rsvp>` ordered by `CreatedAt` and promote the first. `WaitlistService` raises a C# event `MemberPromoted` (delegate) → UI shows the message.
+- **Prediction (F15):** ML.NET regression (e.g. FastTree). Features: event type, day of week, start hour, RSVP count, ticket price, is outdoor. Label: actual attendees. Trained on ~300 **synthetic** past events (say so in the report). Behind `IAttendancePredictor`, so tests can use a fake.
+- **Weather (F16):** Open-Meteo API (free, no key). No internet → hide the warning, no crash.
+- **Export (F5, F19):** `CsvExporter : IExporter<T>`.
+- **Dashboard (F23–F25):** `StatsService` using **LINQ with lambdas**, e.g. `events.Where(e => e.End < DateTime.Now).GroupBy(e => e.Type)...`
 
 ---
 

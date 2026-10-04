@@ -5,7 +5,7 @@ namespace ClubHub.ML;
 
 /// <summary>
 /// Temporary predictor so the app runs end to end.
-/// TODO: replace with an ML.NET regression model trained on past events (see PROJECT_PLAN.md 5.6).
+/// TODO: replace with an ML.NET regression model trained on past events (see PROJECT_PLAN.md section 5, F15).
 /// </summary>
 public class PlaceholderAttendancePredictor : IAttendancePredictor
 {
