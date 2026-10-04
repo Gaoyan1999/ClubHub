@@ -1,0 +1,5 @@
+# Keep line endings consistent between macOS and Windows
+* text=auto
+*.sln text eol=crlf
+*.png binary
+*.jpg binary

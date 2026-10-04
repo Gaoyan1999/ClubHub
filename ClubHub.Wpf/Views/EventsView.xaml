@@ -1,0 +1,9 @@
+<UserControl x:Class="ClubHub.Wpf.Views.EventsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <TextBlock Text="Events &amp; Calendar — coming soon (Member B)"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="18" Foreground="Gray" />
+    </Grid>
+</UserControl>
