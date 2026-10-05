@@ -13,4 +13,11 @@ public class ClashChecker : IClashChecker
             .Where(e => newEvent.Start.Overlaps(newEvent.End, e.Start, e.End))
             .ToList();
     }
+
+    public List<Event> FindTimeClashes(Event target, IEnumerable<Event> otherEvents)
+    {
+        return otherEvents
+            .Where(e => e.Id != target.Id && target.Start.Overlaps(target.End, e.Start, e.End))
+            .ToList();
+    }
 }

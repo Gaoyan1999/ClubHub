@@ -13,6 +13,12 @@ public class DialogService : IDialogService
         return dialog.ShowDialog() == true;
     }
 
+    public bool ShowEventDialog(EventDialogViewModel viewModel)
+    {
+        var dialog = new EventDialog(viewModel) { Owner = Application.Current.MainWindow };
+        return dialog.ShowDialog() == true;
+    }
+
     public bool Confirm(string message, string title)
         => MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
 

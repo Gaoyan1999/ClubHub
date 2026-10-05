@@ -12,7 +12,10 @@
         <!-- Side menu: picking an item switches the page on the right -->
         <DockPanel Background="#1F2937">
             <TextBlock DockPanel.Dock="Top" Text="ClubHub" Foreground="White"
-                       FontSize="22" FontWeight="Bold" Margin="16,20,16,20" />
+                       FontSize="22" FontWeight="Bold" Margin="16,20,16,12" />
+            <TextBlock DockPanel.Dock="Top" Text="CLUB" Foreground="#9CA3AF" FontSize="11" Margin="16,0,16,4" />
+            <ComboBox DockPanel.Dock="Top" Margin="16,0,16,16" ItemsSource="{Binding Clubs}"
+                      SelectedItem="{Binding SelectedClub}" DisplayMemberPath="Name" />
             <ListBox ItemsSource="{Binding Pages}" SelectedItem="{Binding CurrentPage}"
                      Background="Transparent" BorderThickness="0" Foreground="White">
                 <ListBox.ItemTemplate>

@@ -23,6 +23,12 @@ public abstract class Event
 
     public abstract EventType Type { get; }
 
+    // Read-only counts (not stored in the database); need Rsvps to be loaded
+    public int GoingCount => Rsvps.Count(r => r.Status == RsvpStatus.Going);
+    public int WaitlistCount => Rsvps.Count(r => r.Status == RsvpStatus.Waitlisted);
+    public int CheckedInCount => Rsvps.Count(r => r.Status == RsvpStatus.Going && r.CheckedIn);
+    public bool IsFull => GoingCount >= Capacity;
+
     /// <summary>Estimated total cost for the given number of attendees.</summary>
     public abstract decimal EstimateCost(int attendees);
 }

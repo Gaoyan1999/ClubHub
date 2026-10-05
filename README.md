@@ -38,7 +38,7 @@ On first run the app creates and seeds a SQLite database at
 2. Commit and push your branch.
 3. On the Windows VM: `git pull`, then run and debug in Visual Studio.
 
-> **Mac build error `... .baml cannot be found`?** It can happen after adding a new XAML file. Delete `ClubHub.Wpf/obj` and build again.
+> **Mac build error `CS2001 ... .g.cs could not be found` or `... .baml cannot be found`?** This is a WPF build quirk on macOS (it does not happen in Visual Studio on Windows). Run `dotnet build` a second time; if it still fails, delete `ClubHub.Wpf/obj` and build twice.
 
 ## Solution structure
 

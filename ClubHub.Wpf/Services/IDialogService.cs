@@ -10,6 +10,9 @@ public interface IDialogService
     /// <summary>Shows the add/edit member dialog. Returns true when the user saved.</summary>
     bool ShowMemberDialog(MemberDialogViewModel viewModel);
 
+    /// <summary>Shows the add/edit event dialog. Returns true when the user saved.</summary>
+    bool ShowEventDialog(EventDialogViewModel viewModel);
+
     bool Confirm(string message, string title);
 
     void ShowInfo(string message, string title);

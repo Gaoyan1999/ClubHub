@@ -21,7 +21,7 @@
 - [x] Project references and NuGet packages (EF Core SQLite, ML.NET, CommunityToolkit.Mvvm, NUnit)
 - [x] `.gitignore` / `.gitattributes`
 - [x] Main window with side menu and page navigation (MVVM)
-- [ ] (B) Club dropdown in side menu; selected club shared with every screen (F1)
+- [x] (B) Club dropdown in side menu; selected club shared with every screen (F1)
 - [x] App runs on Windows and shows the Members page with seed data
 
 ## 2. Core — models, enums, interfaces (A)
@@ -32,7 +32,7 @@
 - [x] `Member` constructor overloads
 - [x] Interfaces: `IRepository<T>`, `IClashChecker`, `IAttendancePredictor`, `IExporter<T>`
 - [x] Extension method: `DateTime.Overlaps(...)`
-- [ ] Input validation rules on models/services (required fields, email format, end > start, capacity > 0, amount > 0) — members ✅
+- [x] Input validation rules on models/services (required fields, email format, end > start, capacity > 0, amount > 0)
 
 ## 3. Data layer (A)
 
@@ -40,10 +40,10 @@
 - [x] Generic `Repository<T>`
 - [x] `Repository.Find` takes an `Expression` so filters run as SQL `WHERE`; failed saves are undone
 - [x] `DbSeeder` with starter club, members, rooms, events
-- [ ] Seed RSVPs and budget entries for upcoming events
+- [x] Seed RSVPs and budget entries for upcoming events (incl. a full event with a waitlist)
 - [ ] Seed ~300 synthetic past events with RSVPs + check-ins (ML training data)
-- [ ] CSV export: `CsvExporter<T> : IExporter<T>` — members ✅, attendance (F19) still to do
-- [ ] Error handling around database calls (friendly message, no crash) — members ✅
+- [x] CSV export: `CsvExporter<T> : IExporter<T>` for members and attendance
+- [x] Error handling around database calls (friendly message, no crash)
 
 ## 4. Screen 1 — Members (A)
 
@@ -59,32 +59,32 @@
 
 ## 5. Screen 2 — Events & Calendar (B)
 
-- [ ] Event list for the selected club
-- [ ] Month calendar view showing event days
-- [ ] Create/edit event form: title, type, room, start/end date + time, capacity, price, type-specific fields
-- [ ] Validation: end after start, capacity ≤ room capacity, price ≥ 0
+- [x] Event list for the selected club
+- [x] Month calendar view showing event days
+- [x] Create/edit event form: title, type, room, start/end date + time, capacity, price, type-specific fields
+- [x] Validation: end after start, capacity ≤ room capacity, price ≥ 0
 - [x] `ClashChecker` — room clash logic
-- [ ] Room clash warning blocks saving
-- [ ] Member clash warning (member RSVPed to two overlapping events)
-- [ ] Delete event with confirmation
+- [x] Room clash warning blocks saving
+- [x] Member clash warning (member RSVPed to two overlapping events)
+- [x] Delete event with confirmation
 
 ## 6. Screen 3 — Event Detail & Check-in (B)
 
-- [ ] Event summary (time, room, type, price, capacity bar)
-- [ ] RSVP a member (Going or Waitlisted when full)
-- [ ] `WaitlistService` — cancel promotes first waitlisted member (`Queue<Rsvp>`)
-- [ ] `MemberPromoted` C# event → notification in UI
-- [ ] Tabs: Going / Waitlist / Cancelled
-- [ ] Check-in checkboxes + search
-- [ ] Predicted attendance shown ("48 RSVPs → about 35 expected")
+- [x] Event summary (time, room, type, price, capacity bar)
+- [x] RSVP a member (Going or Waitlisted when full)
+- [x] `WaitlistService` — cancel promotes first waitlisted member (`Queue<Rsvp>`)
+- [x] `MemberPromoted` C# event → notification in UI
+- [x] Tabs: Going / Waitlist / Cancelled
+- [x] Check-in checkboxes + search
+- [x] Predicted attendance shown ("48 RSVPs → about 35 expected") — placeholder predictor until the ML model is done
 - [ ] Rain warning for outdoor events (optional, weather API)
 
 ## 7. Screen 4 — Budget (C)
 
-- [ ] Income/cost entries per event in a DataGrid
-- [ ] Add/edit/delete entry with validation
-- [ ] Auto ticket income = check-ins × ticket price
-- [ ] Estimated cost (`EstimateCost()`) vs actual cost
+- [x] Income/cost entries per event in a DataGrid
+- [x] Add/edit/delete entry with validation
+- [x] Auto ticket income = check-ins × ticket price
+- [x] Estimated cost (`EstimateCost()`) vs actual cost
 - [ ] Bar chart: income vs cost per event
 - [ ] Club balance total
 
@@ -110,24 +110,25 @@
 
 ## 10. Tests — NUnit (All)
 
-- [x] Clash checker tests (3)
-- [x] Seeder tests (2)
-- [x] Member validator, CSV exporter and repository tests (17)
-- [ ] Waitlist tests: full event → waitlisted; cancel → promoted in order
-- [ ] Budget tests: totals, estimated cost per event type (polymorphism)
+- [x] Clash checker tests (room + time clashes, 6)
+- [x] Seeder tests (3)
+- [x] Member validator, CSV exporter and repository tests (include, cascade delete)
+- [x] Event tests: `EstimateCost()` polymorphism, counts; event validator tests
+- [x] Waitlist tests: full event → waitlisted; cancel → promoted in order
+- [x] Budget tests: totals, estimated cost per event type (polymorphism)
 - [ ] Stats tests: attendance rate, no-show rate
-- [ ] Validation tests: bad email ✅, duplicate student ID ✅, end before start, negative amount
-- [ ] All tests pass in VS 2022 Test Explorer
+- [x] Validation tests: bad email, duplicate student ID, end before start, capacity, negative amounts
+- [ ] All tests pass in VS 2022 Test Explorer (52 pass with `dotnet test` on macOS)
 
 ## 11. Rubric check (All)
 
-- [ ] Polymorphism used for a real purpose (`EstimateCost()` shown in Budget screen)
+- [x] Polymorphism used for a real purpose (`EstimateCost()` shown in Budget screen)
 - [x] 2+ interfaces in real use
 - [x] Generics / generic collections in real use
 - [x] LINQ + lambda in real use
-- [ ] NUnit tests present and passing
-- [ ] Enums, properties, extension methods, delegates/events in use
-- [ ] 4+ distinct screens with their own job
+- [x] NUnit tests present and passing
+- [x] Enums, properties, extension methods, delegates/events in use
+- [x] 4+ distinct screens with their own job
 - [ ] 6+ UI element categories (buttons, grids, dropdowns, date pickers, calendar, checkboxes, tabs, charts, slider, context menu, modal, progress bar)
 - [ ] Every screen resizes cleanly (small window and maximised)
 - [ ] Error handling: no crash on bad input, missing DB, ML or API failure
