@@ -22,6 +22,15 @@ public class Repository<T> : IRepository<T> where T : class
 
     public List<T> Find(Expression<Func<T, bool>> predicate) => _set.Where(predicate).ToList();
 
+    public List<T> Find(Expression<Func<T, bool>> predicate, params Expression<Func<T, object?>>[] includes)
+    {
+        IQueryable<T> query = _set;
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return query.Where(predicate).ToList();
+    }
+
     public void Add(T item)
     {
         _set.Add(item);

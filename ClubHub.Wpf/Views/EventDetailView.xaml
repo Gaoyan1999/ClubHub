@@ -1,9 +1,157 @@
 <UserControl x:Class="ClubHub.Wpf.Views.EventDetailView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
-        <TextBlock Text="Event Detail &amp; Check-in — coming soon (Member B)"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                   FontSize="18" Foreground="Gray" />
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Event Detail &amp; Check-in" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,12" />
+
+        <!-- Event picker -->
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MaxWidth="520" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Event" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Title, Mode=OneWay}" FontWeight="SemiBold" />
+                            <Run Text="{Binding Start, Mode=OneWay, StringFormat=' · {0:ddd d MMM, HH:mm}'}" Foreground="Gray" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+
+        <!-- Summary -->
+        <Border Grid.Row="2" BorderBrush="#D1D5DB" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12"
+                Visibility="{Binding HasEvent, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel>
+                <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding SelectedEvent.Title}" />
+                <TextBlock Foreground="#4F5D75" Margin="0,4,0,8" TextWrapping="Wrap">
+                    <Run Text="{Binding SelectedEvent.Type, Mode=OneWay}" />
+                    <Run Text=" · " />
+                    <Run Text="{Binding SelectedEvent.Start, Mode=OneWay, StringFormat='{}{0:dddd d MMMM, HH:mm}'}" />
+                    <Run Text="{Binding SelectedEvent.End, Mode=OneWay, StringFormat='–{0:HH:mm}'}" />
+                    <Run Text=" · " />
+                    <Run Text="{Binding SelectedEvent.Room.Name, Mode=OneWay}" />
+                    <Run Text=" · " />
+                    <Run Text="{Binding SelectedEvent.TicketPrice, Mode=OneWay, StringFormat='Ticket {0:C}'}" />
+                </TextBlock>
+                <ProgressBar Height="12" Minimum="0" Maximum="{Binding Capacity}" Value="{Binding GoingCount, Mode=OneWay}" />
+                <TextBlock Text="{Binding CapacityText}" Margin="0,4,0,0" />
+                <TextBlock Text="{Binding PredictionText}" Foreground="#C2410C" Margin="0,4,0,0" />
+            </StackPanel>
+        </Border>
+
+        <!-- Register a member -->
+        <Grid Grid.Row="3" Margin="0,0,0,12" Visibility="{Binding HasEvent, Converter={StaticResource BoolToVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MaxWidth="320" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Register member" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableMembers}" SelectedItem="{Binding MemberToRegister}"
+                      DisplayMemberPath="FullName" />
+            <Button Grid.Column="2" Content="Register" Width="88" Margin="8,0,0,0" Command="{Binding RegisterCommand}" />
+        </Grid>
+
+        <TabControl Grid.Row="4">
+            <TabItem Header="{Binding Going.Count}" HeaderStringFormat="Going ({0})">
+                <DockPanel Margin="8">
+                    <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Content="Cancel registration" Margin="0,8,0,0"
+                            Padding="12,2" Command="{Binding CancelRsvpCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=GoingGrid}" />
+                    <DataGrid x:Name="GoingGrid" ItemsSource="{Binding Going}" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding Member.StudentId}" Width="Auto" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Member.FullName}" Width="*" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Member.Email}" Width="*" />
+                            <DataGridTextColumn Header="Registered" Binding="{Binding CreatedAt, StringFormat='d MMM HH:mm'}" Width="Auto" />
+                            <DataGridCheckBoxColumn Header="Checked in" Binding="{Binding CheckedIn, Mode=OneWay}" Width="Auto" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{Binding Waitlist.Count}" HeaderStringFormat="Waitlist ({0})">
+                <DockPanel Margin="8">
+                    <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Content="Remove from waitlist" Margin="0,8,0,0"
+                            Padding="12,2" Command="{Binding CancelRsvpCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=WaitlistGrid}" />
+                    <TextBlock DockPanel.Dock="Top" Foreground="Gray" Margin="0,0,0,8"
+                               Text="First come, first served: when someone going cancels, the top person moves up." />
+                    <DataGrid x:Name="WaitlistGrid" ItemsSource="{Binding Waitlist}" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding Member.StudentId}" Width="Auto" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Member.FullName}" Width="*" />
+                            <DataGridTextColumn Header="Joined waitlist" Binding="{Binding CreatedAt, StringFormat='d MMM HH:mm'}" Width="Auto" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="{Binding Cancelled.Count}" HeaderStringFormat="Cancelled ({0})">
+                <DataGrid Margin="8" ItemsSource="{Binding Cancelled}" AutoGenerateColumns="False" IsReadOnly="True"
+                          HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Student ID" Binding="{Binding Member.StudentId}" Width="Auto" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Member.FullName}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Check-in">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" MaxWidth="320" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Search" VerticalAlignment="Center" Margin="0,0,8,8" />
+                    <TextBox Grid.Column="1" Margin="0,0,0,8" Padding="4,3"
+                             Text="{Binding CheckInSearch, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="2" Text="{Binding CheckInText}" FontWeight="SemiBold"
+                               VerticalAlignment="Center" HorizontalAlignment="Right" Margin="8,0,0,8" />
+
+                    <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding CheckInList}" AutoGenerateColumns="False"
+                              IsReadOnly="True" HeadersVisibility="Column" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Here" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox HorizontalAlignment="Center" IsChecked="{Binding CheckedIn, Mode=OneWay}"
+                                                  Command="{Binding DataContext.ToggleCheckInCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                  CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding Member.StudentId}" Width="Auto" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Member.FullName}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Grid.Row="2" Content="Export attendance (CSV)" HorizontalAlignment="Left" Margin="0,8,0,0"
+                            Padding="12,2" Command="{Binding ExportAttendanceCommand}" />
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

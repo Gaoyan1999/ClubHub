@@ -16,7 +16,6 @@ public partial class MembersViewModel : PageViewModel
 
     private readonly IRepository<Member> _memberRepository;
     private readonly IDialogService _dialogs;
-    private readonly int _clubId;
 
     // Every member of the club; Members holds only the ones that match the current filters
     private List<Member> _allMembers = new();
@@ -35,23 +34,21 @@ public partial class MembersViewModel : PageViewModel
     [NotifyCanExecuteChangedFor(nameof(EditMemberCommand), nameof(DeleteMemberCommand))]
     private Member? _selectedMember;
 
-    public MembersViewModel(IRepository<Member> memberRepository, IDialogService dialogs, int clubId)
+    public MembersViewModel(IRepository<Member> memberRepository, IDialogService dialogs)
     {
         _memberRepository = memberRepository;
         _dialogs = dialogs;
-        _clubId = clubId;
-        LoadMembers();
     }
 
     partial void OnSearchTextChanged(string value) => ApplyFilter();
 
     partial void OnSelectedRoleFilterChanged(string value) => ApplyFilter();
 
-    private void LoadMembers()
+    protected override void Reload()
     {
         try
         {
-            _allMembers = _memberRepository.Find(m => m.ClubId == _clubId);
+            _allMembers = _memberRepository.Find(m => m.ClubId == ClubId);
         }
         catch (Exception ex)
         {
@@ -87,7 +84,7 @@ public partial class MembersViewModel : PageViewModel
     [RelayCommand]
     private void AddMember()
     {
-        var newMember = new Member { ClubId = _clubId, JoinedDate = DateTime.Today };
+        var newMember = new Member { ClubId = ClubId, JoinedDate = DateTime.Today };
         var form = new MemberDialogViewModel("Add member", newMember, _allMembers);
         if (!_dialogs.ShowMemberDialog(form))
             return;

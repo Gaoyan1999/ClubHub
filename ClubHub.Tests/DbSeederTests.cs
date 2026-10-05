@@ -1,5 +1,6 @@
 using ClubHub.Core.Models;
 using ClubHub.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClubHub.Tests;
 
@@ -32,6 +33,17 @@ public class DbSeederTests
         Assert.That(_context.Clubs.Count(), Is.EqualTo(1));
         Assert.That(_context.Members.Count(), Is.EqualTo(5));
         Assert.That(_context.Events.OfType<Competition>().Count(), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void Seed_ResumeClinic_IsFullWithOneWaiting()
+    {
+        DbSeeder.Seed(_context);
+
+        var clinic = _context.Events.Include(e => e.Rsvps).Single(e => e.Title == "Resume Clinic");
+
+        Assert.That(clinic.GoingCount, Is.EqualTo(clinic.Capacity));
+        Assert.That(clinic.WaitlistCount, Is.EqualTo(1));
     }
 
     [Test]

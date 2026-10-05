@@ -51,6 +51,29 @@ public class RepositoryTests
     }
 
     [Test]
+    public void Find_WithIncludes_LoadsRelatedData()
+    {
+        var events = new Repository<Event>(_context);
+
+        var pizza = events.Find(e => e.Title == "Pizza Night", e => e.Room, e => e.Rsvps).Single();
+
+        Assert.That(pizza.Room?.Name, Is.EqualTo("Alumni Green"));
+        Assert.That(pizza.GoingCount, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void DeleteEvent_AlsoDeletesItsRsvpsAndBudgetEntries()
+    {
+        var events = new Repository<Event>(_context);
+        var pizza = events.Find(e => e.Title == "Pizza Night").Single();
+
+        events.Delete(pizza);
+
+        Assert.That(_context.Rsvps.Count(r => r.EventId == pizza.Id), Is.Zero);
+        Assert.That(_context.BudgetEntries.Count(b => b.EventId == pizza.Id), Is.Zero);
+    }
+
+    [Test]
     public void Update_And_Delete_ArePersisted()
     {
         var ben = _members.Find(m => m.StudentId == "24000002").Single();
