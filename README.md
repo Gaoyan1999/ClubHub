@@ -18,14 +18,16 @@ Full plan, roles and timeline: [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md). T
 ## Run it (Windows)
 
 1. Clone the repo and open `ClubHub.sln` in Visual Studio 2022.
-2. Right-click **ClubHub.Wpf** → **Set as Startup Project**.
-3. Press **F5**.
+2. Copy `ClubHub.Wpf/appsettings.example.json` to `ClubHub.Wpf/appsettings.json` and paste in the
+   database connection string (ask the team — it has the password, so it is **not** in Git).
+3. Right-click **ClubHub.Wpf** → **Set as Startup Project**.
+4. Press **F5**.
 
-On first run the app creates and seeds a SQLite database at
-`%LOCALAPPDATA%\ClubHub\clubhub.db`.
+The app uses a shared **cloud PostgreSQL** database, so it needs internet. On first run it creates
+the tables and seeds starter data. Everyone on the team shares the same data.
 
-> **Changed a model class?** Close the app and delete `clubhub.db` — it is re-created on the next run.
-> (We use `EnsureCreated()` for now, not migrations.)
+> **Changed a model class?** Tell the team first, then drop all tables in the cloud database —
+> the app re-creates and re-seeds them on the next run. (We use `EnsureCreated()`, not migrations.)
 
 ## Run the tests
 
@@ -45,7 +47,7 @@ On first run the app creates and seeds a SQLite database at
 | Project | What goes in it |
 |---|---|
 | `ClubHub.Core` | Models, enums, interfaces, services, extension methods. No UI and no EF code. |
-| `ClubHub.Data` | `ClubHubDbContext` (EF Core + SQLite), `Repository<T>`, `DbSeeder` |
+| `ClubHub.Data` | `ClubHubDbContext` (EF Core + PostgreSQL; tests use SQLite), `Repository<T>`, `DbSeeder` |
 | `ClubHub.ML` | Attendance prediction (placeholder for now → ML.NET model) |
 | `ClubHub.Wpf` | WPF app: `Views/` (XAML), `ViewModels/` (MVVM with CommunityToolkit.Mvvm) |
 | `ClubHub.Tests` | NUnit tests |

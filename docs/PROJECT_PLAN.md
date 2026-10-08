@@ -22,7 +22,7 @@ University clubs and societies run events (workshops, socials, competitions) usi
 | Framework | .NET 9, Visual Studio 2022 | Required by spec — code must compile in VS 2022 in the lab |
 | UI | **WPF** | +2 bonus (instead of Windows Forms) |
 | MVVM helper | CommunityToolkit.Mvvm | Less boilerplate for view models and commands |
-| Database | **EF Core + SQLite** | Part of the +4 bonus; single `.db` file, nothing to install |
+| Database | **EF Core + PostgreSQL (cloud)** | Bonus: "external database with LINQ" + "Entity Framework" (1 mark each). Tests use SQLite |
 | Machine learning | **ML.NET** (regression) | Part of the +4 bonus — attendance prediction (LLM APIs do **not** count) |
 | External API (optional) | Open-Meteo weather (free, no key) | Rain warning for outdoor events |
 | Charts | LiveCharts2 (`LiveChartsCore.SkiaSharpView.WPF`) | Dashboard charts |
@@ -170,7 +170,7 @@ Navigation: a left side menu in a main window; selecting a club is shared across
 | Generics / generic collections | `IRepository<T>`, `Repository<T>`, `Queue<Rsvp>`, `Dictionary<EventType, …>` | A, B |
 | Enums, properties, extension methods | `Enums/`, `Extensions/` | A |
 | Delegates / events | `WaitlistService.MemberPromoted` | B |
-| File/database read & write, EF | EF Core SQLite + CSV export | A |
+| File/database read & write, EF | EF Core PostgreSQL + CSV export | A |
 | Error handling | try/catch around DB, ML and API calls; friendly error dialogs | everyone |
 | Input validation | required fields, email format, end > start, capacity > 0, amounts > 0 | everyone |
 | Code quality | consistent formatting, short helpful comments, clear names | everyone |
