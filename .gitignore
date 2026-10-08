@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 *.db-shm
 *.db-wal
 .DS_Store
+
+# ClubHub database connection string (has the password)
+ClubHub.Wpf/appsettings.json

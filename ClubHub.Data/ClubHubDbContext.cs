@@ -5,8 +5,6 @@ namespace ClubHub.Data;
 
 public class ClubHubDbContext : DbContext
 {
-    private readonly string _connectionString;
-
     public DbSet<Club> Clubs => Set<Club>();
     public DbSet<Member> Members => Set<Member>();
     public DbSet<Room> Rooms => Set<Room>();
@@ -14,28 +12,31 @@ public class ClubHubDbContext : DbContext
     public DbSet<Rsvp> Rsvps => Set<Rsvp>();
     public DbSet<BudgetEntry> BudgetEntries => Set<BudgetEntry>();
 
-    public ClubHubDbContext(string connectionString)
+    public ClubHubDbContext(DbContextOptions<ClubHubDbContext> options) : base(options)
     {
-        _connectionString = connectionString;
     }
 
-    /// <summary>Database file in the user's local app data folder, e.g. %LOCALAPPDATA%\ClubHub\clubhub.db.</summary>
-    public static string DefaultConnectionString()
+    /// <summary>Context for the app's cloud PostgreSQL database.</summary>
+    public static ClubHubDbContext ForPostgres(string connectionString)
     {
-        var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ClubHub");
-        Directory.CreateDirectory(folder);
-        return $"Data Source={Path.Combine(folder, "clubhub.db")}";
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite(_connectionString);
+        var options = new DbContextOptionsBuilder<ClubHubDbContext>()
+            .UseNpgsql(connectionString)
+            .Options;
+        return new ClubHubDbContext(options);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        // SQLite cannot Sum/Order decimals in SQL, so store them as REAL
-        configurationBuilder.Properties<decimal>().HaveConversion<double>();
+        if (Database.IsNpgsql())
+        {
+            // The app uses local times (DateTime.Now); Npgsql only accepts UTC for "timestamp with time zone"
+            configurationBuilder.Properties<DateTime>().HaveColumnType("timestamp without time zone");
+        }
+        else
+        {
+            // Tests run on SQLite, which cannot Sum/Order decimals in SQL, so store them as REAL there
+            configurationBuilder.Properties<decimal>().HaveConversion<double>();
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

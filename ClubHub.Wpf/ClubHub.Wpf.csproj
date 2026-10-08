@@ -15,6 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Holds the database password, so it is gitignored; see appsettings.example.json -->
+    <None Include="appsettings.json" Condition="Exists('appsettings.json')" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClubHub.Core\ClubHub.Core.csproj" />
     <ProjectReference Include="..\ClubHub.Data\ClubHub.Data.csproj" />
     <ProjectReference Include="..\ClubHub.ML\ClubHub.ML.csproj" />

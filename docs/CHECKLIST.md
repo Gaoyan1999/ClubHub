@@ -18,7 +18,7 @@
 ## 1. Solution skeleton
 
 - [x] Solution with 5 projects: Core, Data, ML, Wpf, Tests (.NET 9)
-- [x] Project references and NuGet packages (EF Core SQLite, ML.NET, CommunityToolkit.Mvvm, NUnit)
+- [x] Project references and NuGet packages (EF Core PostgreSQL + SQLite for tests, ML.NET, CommunityToolkit.Mvvm, NUnit)
 - [x] `.gitignore` / `.gitattributes`
 - [x] Main window with side menu and page navigation (MVVM)
 - [x] (B) Club dropdown in side menu; selected club shared with every screen (F1)
@@ -37,6 +37,7 @@
 ## 3. Data layer (A)
 
 - [x] `ClubHubDbContext` with TPH mapping for events
+- [ ] Move to cloud PostgreSQL (external database bonus); connection string in gitignored `appsettings.json`
 - [x] Generic `Repository<T>`
 - [x] `Repository.Find` takes an `Expression` so filters run as SQL `WHERE`; failed saves are undone
 - [x] `DbSeeder` with starter club, members, rooms, events
@@ -139,7 +140,7 @@
 ## 12. Integration and polish (Tue 13 – Wed 14 Oct)
 
 - [ ] All feature branches merged; `main` builds with no errors
-- [ ] Fresh DB test: delete `clubhub.db`, run, everything seeds and works
+- [ ] Fresh DB test: drop all tables in the cloud DB, run, everything seeds and works
 - [ ] Full click-through of every screen on Windows
 - [ ] Remove unused code, TODOs and placeholder text
 - [ ] Consistent look (fonts, colours, spacing) across screens
@@ -160,7 +161,7 @@
 ## 14. Submission (Thu 15 – Fri 16 Oct)
 
 - [ ] `README.txt` in zip root: how to build, run, run tests; team members
-- [ ] Zip: solution + all projects (no `bin/`, `obj/`, `.vs/`, `*.db`) + `Report.pdf` + `README.txt`
+- [ ] Zip: solution + all projects (no `bin/`, `obj/`, `.vs/`, `*.db`) + `Report.pdf` + `README.txt` + real `ClubHub.Wpf/appsettings.json` (tutor needs it to run)
 - [ ] Unzip on a clean Windows machine → open in **VS 2022** → build → run → run tests
 - [ ] Team leader submits on Canvas (aim: midday Fri 16 Oct)
 - [ ] Download the submission from Canvas and test it again

@@ -6,15 +6,13 @@ namespace ClubHub.Tests;
 
 public class DbSeederTests
 {
-    private string _dbPath = null!;
     private ClubHubDbContext _context = null!;
 
     [SetUp]
     public void SetUp()
     {
         // Each test gets its own throwaway database file
-        _dbPath = Path.Combine(Path.GetTempPath(), $"clubhub-test-{Guid.NewGuid()}.db");
-        _context = new ClubHubDbContext($"Data Source={_dbPath}");
+        _context = TestDb.Create();
         _context.Database.EnsureCreated();
     }
 

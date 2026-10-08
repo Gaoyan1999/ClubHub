@@ -12,8 +12,7 @@ public class RepositoryTests
     [SetUp]
     public void SetUp()
     {
-        var dbPath = Path.Combine(Path.GetTempPath(), $"clubhub-test-{Guid.NewGuid()}.db");
-        _context = new ClubHubDbContext($"Data Source={dbPath}");
+        _context = TestDb.Create();
         _context.Database.EnsureCreated();
         DbSeeder.Seed(_context);
         _members = new Repository<Member>(_context);
