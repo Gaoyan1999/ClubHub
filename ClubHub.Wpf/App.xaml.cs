@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows;
+using ClubHub.Core.Services;
 using ClubHub.Data;
 using ClubHub.ML;
 using ClubHub.Wpf.Services;
@@ -22,7 +23,8 @@ public partial class App : Application
             _context.Database.EnsureCreated();
             DbSeeder.Seed(_context);
 
-            var window = new MainWindow { DataContext = new MainViewModel(_context, new DialogService(), new PlaceholderAttendancePredictor()) };
+            var window = new MainWindow { DataContext = new MainViewModel(_context, new DialogService(), new PlaceholderAttendancePredictor(),
+                new OpenMeteoWeatherService()) };
             window.Show();
         }
         catch (Exception ex)
