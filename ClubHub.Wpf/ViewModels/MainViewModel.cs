@@ -42,7 +42,7 @@ public partial class MainViewModel : ObservableObject
             new EventsViewModel(events, new Repository<Room>(context), clashChecker, dialogs, OpenEventDetail),
             eventDetail,
             new BudgetViewModel(events, new Repository<BudgetEntry>(context), rsvps, dialogs),
-            new DashboardViewModel()
+            new DashboardViewModel(events, members, dialogs)
         };
         _currentPage = Pages[0];
 
