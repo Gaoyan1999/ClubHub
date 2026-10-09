@@ -7,6 +7,8 @@ using ClubHub.Core.Services;
 using ClubHub.Wpf.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace ClubHub.Wpf.ViewModels;
 
@@ -48,6 +50,14 @@ public partial class BudgetViewModel : PageViewModel
     [ObservableProperty] private string _profitText = string.Empty;
     [ObservableProperty] private bool _isLoss;
 
+    // Whole club: balance and the income vs cost chart for every event
+    [ObservableProperty] private string _clubBalanceText = string.Empty;
+    [ObservableProperty] private bool _isClubLoss;
+    [ObservableProperty] private ISeries[] _eventMoneySeries = Array.Empty<ISeries>();
+    [ObservableProperty] private Axis[] _eventAxes = { new Axis() };
+
+    public Axis[] MoneyAxes { get; } = { new Axis { MinLimit = 0, Labeler = value => value.ToString("C0") } };
+
     public bool HasEvent => SelectedEvent is not null;
 
     public string FormTitle => SelectedEntry is null ? "Add item" : "Edit selected item";
@@ -81,6 +91,39 @@ public partial class BudgetViewModel : PageViewModel
 
         SelectedEvent = Events.FirstOrDefault(e => e.Id == keepId) ?? Events.FirstOrDefault();
         Refresh();
+        RefreshClubTotals();
+    }
+
+    private void RefreshClubTotals()
+    {
+        var eventIds = Events.Select(e => e.Id).ToList();
+        List<Rsvp> rsvps;
+        List<BudgetEntry> entries;
+        try
+        {
+            rsvps = _rsvpRepository.Find(r => eventIds.Contains(r.EventId));
+            entries = _entryRepository.Find(b => eventIds.Contains(b.EventId));
+        }
+        catch (Exception ex)
+        {
+            ClubBalanceText = string.Empty;
+            EventMoneySeries = Array.Empty<ISeries>();
+            _dialogs.ShowError($"Could not load the club totals.\n\n{ex.Message}");
+            return;
+        }
+
+        // Events is already sorted by date, so the bars run left to right in time order
+        var summaries = BudgetService.SummarizeEach(Events, rsvps, entries);
+        var balance = BudgetService.ClubBalance(summaries.Select(s => s.Summary));
+        ClubBalanceText = balance >= 0 ? $"Club balance {balance:C}" : $"Club balance −{-balance:C}";
+        IsClubLoss = balance < 0;
+
+        EventAxes = new[] { new Axis { Labels = summaries.Select(s => s.Event.Title).ToArray(), LabelsRotation = 15 } };
+        EventMoneySeries = new ISeries[]
+        {
+            new ColumnSeries<double> { Name = "Income", Values = summaries.Select(s => (double)s.Summary.TotalIncome).ToArray() },
+            new ColumnSeries<double> { Name = "Cost", Values = summaries.Select(s => (double)s.Summary.TotalCost).ToArray() }
+        };
     }
 
     partial void OnSelectedEventChanged(Event? value) => Refresh();
@@ -197,6 +240,7 @@ public partial class BudgetViewModel : PageViewModel
         }
 
         Refresh();
+        RefreshClubTotals();
     }
 
     private bool HasSelectedEntry() => SelectedEntry is not null;
@@ -221,5 +265,6 @@ public partial class BudgetViewModel : PageViewModel
         }
 
         Refresh();
+        RefreshClubTotals();
     }
 }

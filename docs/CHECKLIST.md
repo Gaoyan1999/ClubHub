@@ -42,7 +42,7 @@
 - [x] `Repository.Find` takes an `Expression` so filters run as SQL `WHERE`; failed saves are undone
 - [x] `DbSeeder` with starter club, members, rooms, events
 - [x] Seed RSVPs and budget entries for upcoming events (incl. a full event with a waitlist)
-- [ ] Seed ~300 synthetic past events with RSVPs + check-ins (ML training data)
+- [x] ~~Seed ~300 synthetic past events with RSVPs + check-ins (ML training data)~~ — *cut: no ML (decided 10 Oct)*
 - [x] CSV export: `CsvExporter<T> : IExporter<T>` for members and attendance
 - [x] Error handling around database calls (friendly message, no crash)
 
@@ -77,7 +77,7 @@
 - [x] `MemberPromoted` C# event → notification in UI
 - [x] Tabs: Going / Waitlist / Cancelled
 - [x] Check-in checkboxes + search
-- [x] Predicted attendance shown ("48 RSVPs → about 35 expected") — placeholder predictor until the ML model is done
+- [x] Predicted attendance shown ("48 RSVPs → about 35 expected") — simple 75% show-up rule (ML cut)
 - [x] Rain warning for outdoor events (optional, weather API)
 
 ## 7. Screen 4 — Budget (C)
@@ -86,8 +86,8 @@
 - [x] Add/edit/delete entry with validation
 - [x] Auto ticket income = check-ins × ticket price
 - [x] Estimated cost (`EstimateCost()`) vs actual cost
-- [ ] Bar chart: income vs cost per event
-- [ ] Club balance total
+- [x] Bar chart: income vs cost per event
+- [x] Club balance total
 
 ## 8. Screen 5 — Dashboard (C)
 
@@ -101,11 +101,11 @@
 ## 9. Machine learning and external API (C)
 
 - [x] Placeholder predictor so the app runs end to end
-- [ ] Build training data from past events
-- [ ] Train ML.NET regression model (features: type, day, hour, RSVPs, price, outdoor)
-- [ ] Save/load the trained model file
-- [ ] `MlAttendancePredictor : IAttendancePredictor` replaces the placeholder
-- [ ] Record model accuracy (e.g. R², MAE) for the report
+- [x] ~~Build training data from past events~~ — *cut: no ML (decided 10 Oct)*
+- [x] ~~Train ML.NET regression model (features: type, day, hour, RSVPs, price, outdoor)~~ — *cut: no ML (decided 10 Oct)*
+- [x] ~~Save/load the trained model file~~ — *cut: no ML (decided 10 Oct)*
+- [x] ~~`MlAttendancePredictor : IAttendancePredictor` replaces the placeholder~~ — *cut: no ML (decided 10 Oct)*
+- [x] ~~Record model accuracy (e.g. R², MAE) for the report~~ — *cut: no ML (decided 10 Oct)*
 - [x] (Optional) Open-Meteo weather service, fails safely with no internet
 - [x] Decide: weather API in or out (by Mon 12 Oct) — in
 
@@ -119,7 +119,7 @@
 - [x] Budget tests: totals, estimated cost per event type (polymorphism)
 - [x] Stats tests: attendance rate, no-show rate
 - [x] Validation tests: bad email, duplicate student ID, end before start, capacity, negative amounts
-- [x] All tests pass in VS 2022 Test Explorer (66 pass with `dotnet test` on macOS)
+- [x] All tests pass in VS 2022 Test Explorer (67 pass with `dotnet test` on macOS)
 
 ## 11. Rubric check (All)
 
@@ -135,7 +135,7 @@
 - [ ] Error handling: no crash on bad input, missing DB, ML or API failure
 - [ ] Input validation on every form
 - [ ] Code quality: consistent formatting, clear names, short helpful comments
-- [ ] Bonus: WPF ✅ · EF Core ✅ · ML.NET model working · (optional) weather API
+- [x] Bonus: WPF ✅ · EF Core ✅ · cloud PostgreSQL ✅ · weather API ✅ · ~~ML.NET model~~ (cut)
 
 ## 12. Integration and polish (Tue 13 – Wed 14 Oct)
 

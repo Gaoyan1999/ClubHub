@@ -47,6 +47,37 @@ public class BudgetServiceTests
         Assert.That(summary.Profit, Is.Zero);
         Assert.That(summary.EstimatedCost, Is.Zero);
     }
+
+    [Test]
+    public void SummarizeEach_MatchesRsvpsAndEntriesToTheirEvent_AndAddsUpTheClubBalance()
+    {
+        var social = new Social { Id = 1, TicketPrice = 5 };
+        var workshop = new Workshop { Id = 2, TicketPrice = 10 };
+        var rsvps = new[]
+        {
+            new Rsvp { EventId = 1, Status = RsvpStatus.Going, CheckedIn = true },
+            new Rsvp { EventId = 1, Status = RsvpStatus.Going, CheckedIn = true },
+            new Rsvp { EventId = 2, Status = RsvpStatus.Going, CheckedIn = true }
+        };
+        var entries = new[]
+        {
+            new BudgetEntry { EventId = 1, Type = EntryType.Cost, Amount = 4 },
+            new BudgetEntry { EventId = 2, Type = EntryType.Cost, Amount = 30 },
+            new BudgetEntry { EventId = 2, Type = EntryType.Income, Amount = 5 }
+        };
+
+        var summaries = BudgetService.SummarizeEach(new Event[] { social, workshop }, rsvps, entries);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(summaries[0].Event, Is.SameAs(social));
+            Assert.That(summaries[0].Summary.TotalIncome, Is.EqualTo(10m));   // 2 x $5 tickets
+            Assert.That(summaries[0].Summary.TotalCost, Is.EqualTo(4m));
+            Assert.That(summaries[1].Summary.TotalIncome, Is.EqualTo(15m));   // $10 ticket + $5 income
+            Assert.That(summaries[1].Summary.TotalCost, Is.EqualTo(30m));
+            Assert.That(BudgetService.ClubBalance(summaries.Select(s => s.Summary)), Is.EqualTo(-9m));  // 6 profit - 15 loss
+        });
+    }
 }
 
 public class BudgetEntryValidatorTests
