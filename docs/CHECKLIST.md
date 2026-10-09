@@ -37,7 +37,7 @@
 ## 3. Data layer (A)
 
 - [x] `ClubHubDbContext` with TPH mapping for events
-- [ ] Move to cloud PostgreSQL (external database bonus); connection string in gitignored `appsettings.json`
+- [x] Move to cloud PostgreSQL (external database bonus); connection string in gitignored `appsettings.json`
 - [x] Generic `Repository<T>`
 - [x] `Repository.Find` takes an `Expression` so filters run as SQL `WHERE`; failed saves are undone
 - [x] `DbSeeder` with starter club, members, rooms, events
@@ -91,12 +91,12 @@
 
 ## 8. Screen 5 — Dashboard (C)
 
-- [ ] Add LiveCharts2 package
-- [ ] `StatsService` with LINQ + lambda queries
-- [ ] Stat cards: members, upcoming events, attendance rate, no-show rate
-- [ ] Pie chart: events by type
-- [ ] Line chart: attendance or money over time
-- [ ] Date range slider/filter
+- [x] Add LiveCharts2 package
+- [x] `StatsService` with LINQ + lambda queries
+- [x] Stat cards: members, upcoming events, attendance rate, no-show rate
+- [x] Pie chart: events by type
+- [x] Line chart: attendance or money over time
+- [x] Date range slider/filter
 
 ## 9. Machine learning and external API (C)
 
@@ -117,9 +117,9 @@
 - [x] Event tests: `EstimateCost()` polymorphism, counts; event validator tests
 - [x] Waitlist tests: full event → waitlisted; cancel → promoted in order
 - [x] Budget tests: totals, estimated cost per event type (polymorphism)
-- [ ] Stats tests: attendance rate, no-show rate
+- [x] Stats tests: attendance rate, no-show rate
 - [x] Validation tests: bad email, duplicate student ID, end before start, capacity, negative amounts
-- [ ] All tests pass in VS 2022 Test Explorer (52 pass with `dotnet test` on macOS)
+- [ ] All tests pass in VS 2022 Test Explorer (58 pass with `dotnet test` on macOS)
 
 ## 11. Rubric check (All)
 
@@ -130,7 +130,7 @@
 - [x] NUnit tests present and passing
 - [x] Enums, properties, extension methods, delegates/events in use
 - [x] 4+ distinct screens with their own job
-- [ ] 6+ UI element categories (buttons, grids, dropdowns, date pickers, calendar, checkboxes, tabs, charts, slider, context menu, modal, progress bar)
+- [x] 6+ UI element categories (buttons, grids, dropdowns, date pickers, calendar, checkboxes, tabs, charts, slider, context menu, modal, progress bar)
 - [ ] Every screen resizes cleanly (small window and maximised)
 - [ ] Error handling: no crash on bad input, missing DB, ML or API failure
 - [ ] Input validation on every form
