@@ -24,4 +24,17 @@ public static class BudgetService
             TotalCost: entryList.Where(e => e.Type == EntryType.Cost).Sum(e => e.Amount),
             EstimatedCost: evt.EstimateCost(going));
     }
+
+    /// <summary>Summary for each event, matching RSVPs and entries to their event by EventId.</summary>
+    public static List<(Event Event, BudgetSummary Summary)> SummarizeEach(IEnumerable<Event> events,
+        IEnumerable<Rsvp> rsvps, IEnumerable<BudgetEntry> entries)
+    {
+        var rsvpsByEvent = rsvps.ToLookup(r => r.EventId);
+        var entriesByEvent = entries.ToLookup(e => e.EventId);
+
+        return events.Select(e => (e, Summarize(e, rsvpsByEvent[e.Id], entriesByEvent[e.Id]))).ToList();
+    }
+
+    /// <summary>Club balance: total income minus total cost over all the given events.</summary>
+    public static decimal ClubBalance(IEnumerable<BudgetSummary> summaries) => summaries.Sum(s => s.Profit);
 }

@@ -4,8 +4,8 @@ using ClubHub.Core.Models;
 namespace ClubHub.ML;
 
 /// <summary>
-/// Temporary predictor so the app runs end to end.
-/// TODO: replace with an ML.NET regression model trained on past events (see PROJECT_PLAN.md section 5, F15).
+/// Simple rule: about 3 in 4 people who register actually turn up.
+/// The planned ML.NET model was cut for time; it can replace this class through <see cref="IAttendancePredictor"/>.
 /// </summary>
 public class PlaceholderAttendancePredictor : IAttendancePredictor
 {
