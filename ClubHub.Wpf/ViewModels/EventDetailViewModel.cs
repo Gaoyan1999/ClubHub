@@ -18,6 +18,7 @@ public partial class EventDetailViewModel : PageViewModel
     private readonly WaitlistService _waitlist;
     private readonly IClashChecker _clashChecker;
     private readonly IAttendancePredictor _predictor;
+    private readonly IWeatherService _weather;
     private readonly IDialogService _dialogs;
 
     private List<Event> _allEvents = new();
@@ -25,6 +26,7 @@ public partial class EventDetailViewModel : PageViewModel
     private List<Rsvp> _eventRsvps = new();
     private int? _requestedEventId;
     private Rsvp? _lastPromoted;
+    private int _weatherRequest;   // ignores a slow forecast that arrives after the user picked another event
 
     public override string Title => "Event Detail & Check-in";
 
@@ -50,12 +52,14 @@ public partial class EventDetailViewModel : PageViewModel
     [ObservableProperty] private string _capacityText = string.Empty;
     [ObservableProperty] private string _checkInText = string.Empty;
     [ObservableProperty] private string _predictionText = string.Empty;
+    [ObservableProperty] private string _weatherText = string.Empty;
+    [ObservableProperty] private bool _isRainLikely;
 
     public bool HasEvent => SelectedEvent is not null;
 
     public EventDetailViewModel(IRepository<Event> eventRepository, IRepository<Member> memberRepository,
         IRepository<Rsvp> rsvpRepository, WaitlistService waitlist, IClashChecker clashChecker,
-        IAttendancePredictor predictor, IDialogService dialogs)
+        IAttendancePredictor predictor, IWeatherService weather, IDialogService dialogs)
     {
         _eventRepository = eventRepository;
         _memberRepository = memberRepository;
@@ -63,6 +67,7 @@ public partial class EventDetailViewModel : PageViewModel
         _waitlist = waitlist;
         _clashChecker = clashChecker;
         _predictor = predictor;
+        _weather = weather;
         _dialogs = dialogs;
 
         // Remember who moved up; the message is shown after the change is saved
@@ -103,9 +108,41 @@ public partial class EventDetailViewModel : PageViewModel
                         ?? Events.FirstOrDefault(e => e.Start >= DateTime.Today)
                         ?? Events.FirstOrDefault();
         RefreshRsvps();
+        _ = ShowWeatherAsync();
     }
 
-    partial void OnSelectedEventChanged(Event? value) => RefreshRsvps();
+    partial void OnSelectedEventChanged(Event? value)
+    {
+        RefreshRsvps();
+        _ = ShowWeatherAsync();
+    }
+
+    // Rain warning for upcoming outdoor events. Shows nothing when there is no forecast (e.g. no internet).
+    private async Task ShowWeatherAsync()
+    {
+        var request = ++_weatherRequest;
+        WeatherText = string.Empty;
+        IsRainLikely = false;
+
+        if (SelectedEvent is not { Room.IsOutdoor: true } evt || evt.End < DateTime.Now)
+            return;
+
+        WeatherText = "Checking the weather…";
+        var forecast = await _weather.GetRainForecastAsync(evt.Start, evt.End);
+        if (request != _weatherRequest)
+            return;
+
+        if (forecast is null)
+        {
+            WeatherText = string.Empty;
+            return;
+        }
+
+        IsRainLikely = forecast.IsRainLikely;
+        WeatherText = forecast.IsRainLikely
+            ? $"⚠ Rain is forecast for {evt.Title} (outdoor): {forecast.MaxChancePercent}% chance, about {forecast.TotalMm} mm."
+            : $"Low chance of rain for this outdoor event ({forecast.MaxChancePercent}%).";
+    }
 
     partial void OnCheckInSearchChanged(string value) => FillCheckInList();
 

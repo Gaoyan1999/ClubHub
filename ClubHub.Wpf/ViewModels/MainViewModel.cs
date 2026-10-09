@@ -20,14 +20,15 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private PageViewModel _currentPage;
 
-    public MainViewModel(ClubHubDbContext context, IDialogService dialogs, IAttendancePredictor predictor)
+    public MainViewModel(ClubHubDbContext context, IDialogService dialogs, IAttendancePredictor predictor,
+        IWeatherService weather)
     {
         var clashChecker = new ClashChecker();
         var events = new Repository<Event>(context);
         var members = new Repository<Member>(context);
         var rsvps = new Repository<Rsvp>(context);
 
-        var eventDetail = new EventDetailViewModel(events, members, rsvps, new WaitlistService(), clashChecker, predictor, dialogs);
+        var eventDetail = new EventDetailViewModel(events, members, rsvps, new WaitlistService(), clashChecker, predictor, weather, dialogs);
 
         // "Open details" on the Events screen jumps to the Event Detail screen for that event
         void OpenEventDetail(Event evt)

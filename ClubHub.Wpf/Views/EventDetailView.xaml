@@ -49,6 +49,22 @@
                 <ProgressBar Height="12" Minimum="0" Maximum="{Binding Capacity}" Value="{Binding GoingCount, Mode=OneWay}" />
                 <TextBlock Text="{Binding CapacityText}" Margin="0,4,0,0" />
                 <TextBlock Text="{Binding PredictionText}" Foreground="#C2410C" Margin="0,4,0,0" />
+                <TextBlock Text="{Binding WeatherText}" Margin="0,4,0,0" TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#4F5D75" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsRainLikely}" Value="True">
+                                    <Setter Property="Foreground" Value="Firebrick" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding WeatherText}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
         </Border>
 

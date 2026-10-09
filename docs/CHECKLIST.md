@@ -78,7 +78,7 @@
 - [x] Tabs: Going / Waitlist / Cancelled
 - [x] Check-in checkboxes + search
 - [x] Predicted attendance shown ("48 RSVPs → about 35 expected") — placeholder predictor until the ML model is done
-- [ ] Rain warning for outdoor events (optional, weather API)
+- [x] Rain warning for outdoor events (optional, weather API)
 
 ## 7. Screen 4 — Budget (C)
 
@@ -106,8 +106,8 @@
 - [ ] Save/load the trained model file
 - [ ] `MlAttendancePredictor : IAttendancePredictor` replaces the placeholder
 - [ ] Record model accuracy (e.g. R², MAE) for the report
-- [ ] (Optional) Open-Meteo weather service, fails safely with no internet
-- [ ] Decide: weather API in or out (by Mon 12 Oct)
+- [x] (Optional) Open-Meteo weather service, fails safely with no internet
+- [x] Decide: weather API in or out (by Mon 12 Oct) — in
 
 ## 10. Tests — NUnit (All)
 
@@ -119,7 +119,7 @@
 - [x] Budget tests: totals, estimated cost per event type (polymorphism)
 - [x] Stats tests: attendance rate, no-show rate
 - [x] Validation tests: bad email, duplicate student ID, end before start, capacity, negative amounts
-- [ ] All tests pass in VS 2022 Test Explorer (58 pass with `dotnet test` on macOS)
+- [x] All tests pass in VS 2022 Test Explorer (66 pass with `dotnet test` on macOS)
 
 ## 11. Rubric check (All)
 
@@ -139,7 +139,7 @@
 
 ## 12. Integration and polish (Tue 13 – Wed 14 Oct)
 
-- [ ] All feature branches merged; `main` builds with no errors
+- [x] All feature branches merged; `main` builds with no errors
 - [ ] Fresh DB test: drop all tables in the cloud DB, run, everything seeds and works
 - [ ] Full click-through of every screen on Windows
 - [ ] Remove unused code, TODOs and placeholder text
